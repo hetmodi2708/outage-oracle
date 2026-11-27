@@ -1,0 +1,458 @@
+{
+  "recall@k": 0.8666666666666667,
+  "mrr": 0.65,
+  "hits": 26,
+  "total": 30,
+  "per_query": [
+    {
+      "expected_id": "007_cloudflare",
+      "category": "application",
+      "hint": "A change to our Tiered Cache system caused some requests to fail for users with status code 530. The impact lasted for almost six hours in total. We estimate that about 5% of all requests failed at peak. Because of the complexity of our system and a blind spot in our tests, we did not spot this when the change was released to our test environment.",
+      "query": "some requests returning 530s after a cdn rollout, ~5% failing, locally cached stuff fine, looks like internal dns lookups failing??",
+      "hit": true,
+      "rank": 1,
+      "returned": [
+        "007_cloudflare",
+        "025_github",
+        "209_reddit",
+        "010_cloudflare",
+        "074_amazon"
+      ]
+    },
+    {
+      "expected_id": "010_cloudflare",
+      "category": "application",
+      "hint": "On 18 Nov. 2025, a change in permissions in a database in Cloudflare's bot-detection systems caused a file to be output that exceeded the limits of the software that runs that system. That file was propagated througout Cloudflare's network, causing a systemwide outage.",
+      "query": "5xx spiking across entire edge, recovers then fails again every few min, proxy panicking 'called unwrap on an Err' - is this a ddos",
+      "hit": true,
+      "rank": 4,
+      "returned": [
+        "118_basecamp",
+        "015_cloudflare",
+        "159_github",
+        "010_cloudflare",
+        "069_github"
+      ]
+    },
+    {
+      "expected_id": "136_cloudflare",
+      "category": "application",
+      "hint": "A CPU exhaustion was caused by a single WAF rule that contained a poorly written regular expression that ended up creating excessive backtracking. This rule was deployed quickly to production and a series of events lead to a global 27 minutes downtime of the Cloudflare services.",
+      "query": "cpu 100% on every edge box worldwide right after a firewall rule push, 502s everywhere, lost ~80% traffic, cant even login to internal tools",
+      "hit": false,
+      "rank": null,
+      "returned": [
+        "209_reddit",
+        "039_google",
+        "005_cloudflare",
+        "063_amazon",
+        "013_cloudflare"
+      ]
+    },
+    {
+      "expected_id": "143_discord",
+      "category": "application",
+      "hint": "A flapping service lead to a thundering herd reconnecting to it once it came up. This lead to a cascading error where frontend services ran out of memory due to internal queues filling up.",
+      "query": "one node in our user state cluster disconnected, now session servers OOMing one after another, 1/3 of users stalled. recovered and it happened AGAIN",
+      "hit": true,
+      "rank": 3,
+      "returned": [
+        "126_ccp-games",
+        "076_github",
+        "143_discord",
+        "065_cloudflare",
+        "210_roblox"
+      ]
+    },
+    {
+      "expected_id": "181_incident-io",
+      "category": "application",
+      "hint": "A bad event (poison pill) in the async workers queue triggered unhandled panics that repeatedly crashed the app. This combined poorly with Heroku infrastructure, making it difficult to find the source of the problem. Applied mitigations that are generally interesting to people running web services, such as catching corner cases of Go panic recovery and splitting work by type/class to improve reliability.",
+      "query": "app crashes again few min after every restart, panic stack trace gets cut off in logs, error tracker shows nothing, recover() is in place??",
+      "hit": true,
+      "rank": 1,
+      "returned": [
+        "181_incident-io",
+        "024_firefox",
+        "132_circleci",
+        "115_appnexus",
+        "032_google"
+      ]
+    },
+    {
+      "expected_id": "219_spotify",
+      "category": "application",
+      "hint": "Lack of exponential backoff in a microservice caused a cascading failure, leading to notable service degradation.",
+      "query": "tiny counts service overloaded again even after we added fail fast, edge servers dying on disk io, clients retrying nonstop on a busy saturday night",
+      "hit": true,
+      "rank": 4,
+      "returned": [
+        "146_duo",
+        "017_cloudflare",
+        "143_discord",
+        "219_spotify",
+        "133_circleci"
+      ]
+    },
+    {
+      "expected_id": "133_circleci",
+      "category": "application",
+      "hint": "A routine RabbitMQ upgrade from 3.8.9 to 3.8.16 introduced a 15-minute consumer ack timeout that the changelog described as scoped to quorum queues but actually applied to all queue types. Consumers on the VM-destroyer queue gradually got their channels closed until the queue had zero consumers, so VMs in one region stopped being deleted; this eventually backed up VM creation and blocked Docker, machine, Windows, Mac, Arm, GPU, and remote-Docker jobs for ~12 hours.",
+      "query": "vm cleanup queue has zero consumers, they keep dropping off, old vms piling up, now hitting cloud cpu quota and jobs blocked for hours",
+      "hit": true,
+      "rank": 1,
+      "returned": [
+        "133_circleci",
+        "002_circleci",
+        "052_travisci",
+        "027_github",
+        "132_circleci"
+      ]
+    },
+    {
+      "expected_id": "086_cloudflare",
+      "category": "application",
+      "hint": "Backwards time flow from tracking [the 27th leap second on 2016-12-31T23:59:60Z](https://hpiers.obspm.fr/iers/bul/bulc/bulletinc.52) caused the weighted round-robin selection of DNS resolvers (RRDNS) to panic and fail on some CNAME lookups.  Go's `time.Now()` was incorrectly assumed to be monotonic; this injected negative values into calls to `rand.Int63n()`, which panics in that case.",
+      "query": "dns failing for some CNAME records right at midnight utc new years, resolver process panicking, only ~0.2% of queries",
+      "hit": true,
+      "rank": 1,
+      "returned": [
+        "086_cloudflare",
+        "209_reddit",
+        "025_github",
+        "009_cloudflare",
+        "001_amazon"
+      ]
+    },
+    {
+      "expected_id": "002_circleci",
+      "category": "database",
+      "hint": "A deploy changed the type of a field in the PostgreSQL database used by the job-distribution service. Newly-written rows used the new type and old rows used the old type, so the distributor's strict schema validation failed on each scan and it stopped distributing work. Rolling back made the rows written between the two deploys unreadable, so distribution kept failing; recovery required hand-deploying a build that ignored the offending field, plus manual scaling.",
+      "query": "all jobs stuck 'not running' right after deploy, work distributor erroring on every scan, rolled back and its STILL failing",
+      "hit": true,
+      "rank": 1,
+      "returned": [
+        "002_circleci",
+        "041_heroku",
+        "134_circleci",
+        "179_honeycomb",
+        "126_ccp-games"
+      ]
+    },
+    {
+      "expected_id": "094_github",
+      "category": "database",
+      "hint": "A foreign key on the scoped-tokens table hit max INT32, causing high failure rates for Actions and Pages and breaking scoped-token Git operations for 9h48m. Mitigation required a long-running schema migration to INT64. Linting that would have caught the column predated the column itself; one Action briefly received unauthorized access grants that were then revoked.",
+      "query": "inserts failing on tokens table out of nowhere, ci runs + static site deploys erroring, git push w/ scoped tokens broken",
+      "hit": true,
+      "rank": 1,
+      "returned": [
+        "094_github",
+        "096_github",
+        "055_travisci",
+        "041_heroku",
+        "027_github"
+      ]
+    },
+    {
+      "expected_id": "194_mandrill",
+      "category": "database",
+      "hint": "Transaction ID wraparound in Postgres caused a partial outage lasting a day and a half.",
+      "query": "one db shard suddenly refusing all writes, went into some safety shutdown, emails queueing up, app server disks filling with failed jobs",
+      "hit": true,
+      "rank": 2,
+      "returned": [
+        "132_circleci",
+        "194_mandrill",
+        "098_github",
+        "090_circleci",
+        "095_github"
+      ]
+    },
+    {
+      "expected_id": "079_gocardless",
+      "category": "database",
+      "hint": "All queries on a critical PostgreSQL table were blocked by the combination of an extremely fast database migration and a long-running read query, causing 15 seconds of downtime.",
+      "query": "api timed out for ~15 sec during a migration on an EMPTY table?? same migration runs in ms on a backup",
+      "hit": true,
+      "rank": 1,
+      "returned": [
+        "079_gocardless",
+        "100_incident-io",
+        "057_turso",
+        "094_github",
+        "188_joyent"
+      ]
+    },
+    {
+      "expected_id": "163_gitlab",
+      "category": "database",
+      "hint": "Influx of requests overloaded the database, caused replication to lag, tired admin deleted the wrong directory, six hours of data lost. See also [earlier report](https://about.gitlab.com/2017/02/01/gitlab-dot-com-database-incident) and [HN discussion](https://web.archive.org/web/20240918153505/https://news.ycombinator.com/item?id=13537052).",
+      "query": "db load spike from spam, replica fell way behind and replication broke, base backup to resync just hangs no output, backup bucket is empty",
+      "hit": false,
+      "rank": null,
+      "returned": [
+        "146_duo",
+        "065_cloudflare",
+        "095_github",
+        "047_razorpay",
+        "132_circleci"
+      ]
+    },
+    {
+      "expected_id": "144_discord",
+      "category": "database",
+      "hint": "\"At approximately 14:01, a Redis instance acting as the primary for a highly-available cluster used by Discord's API services was migrated automatically by Google’s Cloud Platform. This migration caused the node to incorrectly drop offline, forcing the cluster to rebalance and trigger known issues with the way Discord API instances handle Redis failover. After resolving this partial outage, unnoticed issues on other services caused a cascading failure through Discord’s real time system. These issues caused enough critical impact that Discord’s engineering team was forced to fully restart the service, reconnecting millions of clients over a period of 20 minutes.\"",
+      "query": "fixed the cache failover but api latency still high, one expensive endpoint getting hammered by clients, then chat servers showing offline for users",
+      "hit": true,
+      "rank": 1,
+      "returned": [
+        "144_discord",
+        "218_slack",
+        "007_cloudflare",
+        "216_slack",
+        "217_slack"
+      ]
+    },
+    {
+      "expected_id": "090_circleci",
+      "category": "database",
+      "hint": "At peak Wednesday-afternoon load, the primary database backed up with queued operations to the point that it stopped catching up; rolling back recent changes had no isolated effect because the queue depth had already saturated the system, and a primary failover to kill queued ops only bought temporary headroom. After the runnable-queue was drained, builds were stuck in the prior queue stage; manually promoting them flooded the next queue, and the build-scheduler's failure-mode throttles fired on what were actually normal conditions and backed off precisely when more throughput was needed. CircleCI rebuilt tooling on the fly to clear a 17-hour backlog.",
+      "query": "busiest afternoon, db ops queueing and never catching up, rolled back recent changes nothing changed, builds queued while capacity sits idle",
+      "hit": true,
+      "rank": 1,
+      "returned": [
+        "090_circleci",
+        "129_circleci",
+        "132_circleci",
+        "091_circleci",
+        "002_circleci"
+      ]
+    },
+    {
+      "expected_id": "004_cloudflare",
+      "category": "network",
+      "hint": "A bad config (router rule) caused all of their edge routers to crash, taking down all of Cloudflare.",
+      "query": "every edge router crashed at once after pushing a ddos filter rule, routes withdrawn, some wont auto reboot, cant reach mgmt ports",
+      "hit": true,
+      "rank": 1,
+      "returned": [
+        "004_cloudflare",
+        "015_cloudflare",
+        "013_cloudflare",
+        "118_basecamp",
+        "144_discord"
+      ]
+    },
+    {
+      "expected_id": "022_facebook",
+      "category": "network",
+      "hint": "Configuration changes to Facebook's backbone routers caused a global outage of all Facebook properties and internal tools.",
+      "query": "whole backbone down during maintenance, all datacenters disconnected, our dns servers unreachable from internet, internal tools dead, cant get in remotely",
+      "hit": true,
+      "rank": 1,
+      "returned": [
+        "022_facebook",
+        "005_cloudflare",
+        "061_amazon",
+        "025_github",
+        "067_cloudflare"
+      ]
+    },
+    {
+      "expected_id": "050_stack-overflow",
+      "category": "network",
+      "hint": "A bad firewall config blocked stackexchange/stackoverflow.",
+      "query": "every site 502ing, load balancer health checks to web servers all timing out, nothing changed on the web boxes, config mgmt ran ~20 min ago",
+      "hit": false,
+      "rank": null,
+      "returned": [
+        "034_google",
+        "128_chef-io",
+        "223_stack-exchange",
+        "222_stack-exchange",
+        "074_amazon"
+      ]
+    },
+    {
+      "expected_id": "134_circleci",
+      "category": "network",
+      "hint": "A staged Kubernetes upgrade of CircleCI's main production cluster left `kube-proxy` and `kubelet` at incompatible versions. The change between versions altered the format of `kube-proxy`'s `iptables` rulesets, so as pods churned and `Endpoints` objects changed, `kube-proxy`'s `Proxier.syncProxyRules()` (an `iptables-save` / `iptables-restore` read-modify-write) repeatedly hit \"Sync failed\" errors, leaving the per-node iptables in a corrupted state and silently breaking service-to-service routing across the cluster. Recovery required a full node-by-node cluster restart and triggered two follow-on incidents.",
+      "query": "service to service calls failing across cluster after we rolled back part of an upgrade, restarting dns made it worse, rebooting a node fixes just that node",
+      "hit": true,
+      "rank": 2,
+      "returned": [
+        "019_datadog",
+        "134_circleci",
+        "210_roblox",
+        "144_discord",
+        "209_reddit"
+      ]
+    },
+    {
+      "expected_id": "137_cloudflare",
+      "category": "network",
+      "hint": "A single customer's traffic surge from AWS us-east-1 saturated Cloudflare's peering links; AWS's BGP prefix withdrawals to mitigate congestion paradoxically rerouted traffic to already-strained alternate paths, compounded by a pre-existing half-capacity link failure and insufficient DCI capacity.",
+      "query": "huge latency + packet loss only for origins in one cloud region, peering links maxed out, traffic doubled from one customer, provider withdrawing routes made it worse",
+      "hit": true,
+      "rank": 3,
+      "returned": [
+        "081_google",
+        "036_google",
+        "137_cloudflare",
+        "039_google",
+        "112_amazon"
+      ]
+    },
+    {
+      "expected_id": "217_slack",
+      "category": "network",
+      "hint": "Network saturation in AWS's traffic gateways caused packet loss. An attempt to scale up caused more issues.",
+      "query": "first monday after holidays, packet loss between networks, dashboards + alerting down, autoscaler added 1000+ instances but they never finish provisioning",
+      "hit": true,
+      "rank": 1,
+      "returned": [
+        "217_slack",
+        "061_amazon",
+        "036_google",
+        "063_amazon",
+        "039_google"
+      ]
+    },
+    {
+      "expected_id": "113_amazon",
+      "category": "compute",
+      "hint": "As the Lambda Frontend fleet scaled in response to normal daily traffic growth, it crossed a capacity threshold within a single cell that had never been reached before, triggering a latent software defect that caused Execution Environments to be successfully allocated but never fully utilized. Lambda invocations failed in the affected cell, cascading into STS, EKS, EventBridge, Connect, and the AWS Management Console for several hours.",
+      "query": "serverless function calls erroring + slow in one region during normal daily peak, async event backlog growing, console showing 504s",
+      "hit": true,
+      "rank": 2,
+      "returned": [
+        "126_ccp-games",
+        "113_amazon",
+        "132_circleci",
+        "180_honeycomb",
+        "229_tarsnap"
+      ]
+    },
+    {
+      "expected_id": "087_linux",
+      "category": "compute",
+      "hint": "Leap second code was called from the timer interrupt handler, which held `xtime_lock`. That code did a `printk` to log the leap second. `printk` wakes up `klogd`, which can sometimes try to get the time, which waits on `xtime_lock`, causing a deadlock.",
+      "query": "busy servers hard locked at midnight new years, idle ones fine, kernel stack trace shows printk + timer stuff",
+      "hit": true,
+      "rank": 2,
+      "returned": [
+        "143_discord",
+        "087_linux",
+        "132_circleci",
+        "072_pythonanywhere",
+        "126_ccp-games"
+      ]
+    },
+    {
+      "expected_id": "053_travisci",
+      "category": "compute",
+      "hint": "A configuration issue (automated age-based Google Compute Engine VM image cleanup job) caused stable base VM images to be deleted.",
+      "query": "every build on our vm platform failing, base vm images just gone, cant rebuild them the same way, cleanup service was re-enabled today",
+      "hit": true,
+      "rank": 2,
+      "returned": [
+        "052_travisci",
+        "053_travisci",
+        "027_github",
+        "133_circleci",
+        "183_incident-io"
+      ]
+    },
+    {
+      "expected_id": "103_amazon",
+      "category": "storage",
+      "hint": "Human error. On February 28th 2017 9:37AM PST, the Amazon S3 team was debugging a minor issue. Despite using an established playbook, one of the commands intending to remove a small number of servers was issued with a typo, inadvertently causing a larger set of servers to be removed. These servers supported critical S3 systems. As a result, dependent systems required a full restart to correctly operate, and the system underwent widespread outages for US-EAST-1 (Northern Virginia) until final resolution at 1:54PM PST. Since Amazon's own services such as EC2 and EBS rely on S3 as well, it caused a vast cascading failure which affected hundreds of companies.",
+      "query": "ran a remove-servers command from the runbook and now entire storage service down in region, everything on top of it failing, restart taking hours",
+      "hit": true,
+      "rank": 1,
+      "returned": [
+        "103_amazon",
+        "035_google",
+        "043_microsoft",
+        "071_google",
+        "025_github"
+      ]
+    },
+    {
+      "expected_id": "229_tarsnap",
+      "category": "storage",
+      "hint": "A batch job which scans for unused blocks in Amazon S3 and marks them to be freed encountered a condition where all retries for freeing certain blocks would fail. The batch job logs its actions to local disk and this log grew without bound. When the filesystem filled, this caused other filesystem writes to fail, and the Tarsnap service stopped. Manually removing the log file restored service.",
+      "query": "service shut itself down, disk full on server, one background log file is huge, object storage writes keep failing retries",
+      "hit": true,
+      "rank": 2,
+      "returned": [
+        "146_duo",
+        "229_tarsnap",
+        "218_slack",
+        "106_amazon",
+        "035_google"
+      ]
+    },
+    {
+      "expected_id": "009_cloudflare",
+      "category": "dns",
+      "hint": "On 4 October 2023, Cloudflare experienced DNS resolution problems starting at 07:00 UTC and ending at 11:00 UTC. Some users of 1.1.1.1 or products like WARP, Zero Trust, or third party DNS resolvers which use 1.1.1.1 may have received SERVFAIL DNS responses to valid queries. We’re very sorry for this outage. This outage was an internal software error and not the result of an attack. In this blog, we’re going to talk about what the failure was, why it occurred, and what we’re doing to make sure this doesn’t happen again.",
+      "query": "resolver giving SERVFAIL for valid domains, ~15% in biggest datacenters, dnssec validation failing, recently restarted boxes are fine",
+      "hit": true,
+      "rank": 1,
+      "returned": [
+        "009_cloudflare",
+        "001_amazon",
+        "025_github",
+        "161_github",
+        "019_datadog"
+      ]
+    },
+    {
+      "expected_id": "074_amazon",
+      "category": "dns",
+      "hint": "A latent race condition in DynamoDB's DNS management left the regional endpoint `dynamodb.us-east-1.amazonaws.com` with an empty record. Two redundant \"DNS Enactor\" processes raced when one was unusually delayed; a second Enactor applied a newer plan and ran cleanup while the first overwrote the regional endpoint with a stale older plan, which the cleanup process then deleted. The DynamoDB outage cascaded into EC2 (DWFM \"congestive collapse\"), Network Load Balancer health-check flapping, and Lambda for ~15 hours.",
+      "query": "db back up hours ago but new instances still wont launch 'insufficient capacity', load balancer health checks flapping healthy/unhealthy",
+      "hit": true,
+      "rank": 3,
+      "returned": [
+        "124_buildkite",
+        "146_duo",
+        "074_amazon",
+        "128_chef-io",
+        "217_slack"
+      ]
+    },
+    {
+      "expected_id": "089_mozilla",
+      "category": "auth-cert",
+      "hint": "Most Firefox add-ons stopped working around May 4th 2019 when a certificate expired. Firefox requires a valid certificate chain to prevent malware. About nine hours later, Mozilla pushed a privileged add-on that injected a valid certificate into Firefox's certificate store, creating a valid chain and unblocking add-ons. This disabled effectively all add-ons, about 15,000, and the resolution took approximately 15-21 hours for most users. Some user data was lost. Previously Mozilla [posted](https://web.archive.org/web/20250408175304/https://hacks.mozilla.org/2019/05/technical-details-on-the-recent-firefox-add-on-outage/) about the technical details.",
+      "query": "all extensions show 'could not be verified' for every user since midnight utc, normal update channel too slow to push fix",
+      "hit": false,
+      "rank": null,
+      "returned": [
+        "025_github",
+        "031_google",
+        "033_google",
+        "092_github",
+        "035_google"
+      ]
+    },
+    {
+      "expected_id": "085_azure",
+      "category": "compute",
+      "hint": "Certificates that were valid for one year were created. Instead of using an appropriate library, someone wrote code that computed one year to be the current date plus one year. On February 29th 2012, this resulted in the creation of certificates with an expiration date of February 29th 2013, which were rejected because of the invalid date. This caused an Azure global outage that lasted for most of a day.",
+      "query": "new vms never come up on feb 29, agent times out after 25 min, hosts getting marked faulty one after another across clusters",
+      "hit": true,
+      "rank": 1,
+      "returned": [
+        "085_azure",
+        "080_google",
+        "052_travisci",
+        "027_github",
+        "133_circleci"
+      ]
+    }
+  ]
+}

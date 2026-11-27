@@ -3,6 +3,7 @@ import json
 import numpy as np
 import chromadb
 from sentence_transformers import SentenceTransformer
+from langchain_text_splitters import RecursiveCharacterTextSplitter
 from typing import List, Dict, Any, Tuple
 
 STRUCTURED_DIR = "data/structured"
@@ -27,6 +28,34 @@ def load_incidents():
     print(f"Loaded {len(incidents)} incidents")
     return incidents
 
+### Step 2: Chunking
+
+def split_incidents(incidents, chunk_size = 800, chunk_overlap = 150):
+    """Split incidents into smaller chunks for better RAG performance"""
+
+    text_splitter = RecursiveCharacterTextSplitter(
+        chunk_size=chunk_size,
+        chunk_overlap=chunk_overlap,
+        length_function=len,
+        separators=["\n\n", "\n", " ", ""] 
+    )
+
+    chunks = []
+
+    for inc in incidents:
+        text = inc["text"][:30000]
+        pieces = text_splitter.split_text(text)
+
+        for i, piece in enumerate(pieces):
+            chunks.append({
+                "id": f"{inc['id']}__{i}",
+                "text": piece,
+                "metadata": {"incident_id": inc["id"], "chunk_index": i, "company": inc["company"], "url": inc["url"], "category": inc["category"]}
+            })
+        
+    print(f"Split {len(incidents)} documents into {len(chunks)} chunks")
+
+    return chunks
 
 ### Step 2: EmbeddingManager 
 class EmbeddingManager:
@@ -151,6 +180,24 @@ class VectorStore:
             print(f"Error adding incidents to vector store: {e}")
             raise e
 
+    def add_chunks(self, chunks: List[Dict[str, Any]], embeddings: np.ndarray):
+        """Upsert full-text chunks; each one remembers its parent incident in metadata"""
+        if len(chunks) != len(embeddings):
+            raise ValueError("Number of chunks must match number of embeddings")
+
+        try:
+            self.collection.upsert(
+                ids=[c["id"] for c in chunks],
+                documents=[c["text"] for c in chunks],
+                metadatas=[c["metadata"] for c in chunks],
+                embeddings=[emb.tolist() for emb in embeddings],
+            )
+            print(f"Upserted {len(chunks)} chunks")
+            print(f"Total chunks in collection: {self.collection.count()}")
+        except Exception as e:
+            print(f"Error adding chunks to vector store: {e}")
+            raise e
+
 
 if __name__ == "__main__":
     incidents = load_incidents()
@@ -161,6 +208,10 @@ if __name__ == "__main__":
     symptoms = [inc["symptoms"] for inc in incidents]
     embeddings = embedding_manager.generate_embeddings(symptoms)
     vector_store.add_incidents(incidents, embeddings)
+    chunks = split_incidents(incidents)
+    chunk_store = VectorStore(collection_name="incident_chunks")
+    chunk_embeddings = embedding_manager.generate_embeddings([c["text"] for c in chunks])
+    chunk_store.add_chunks(chunks, chunk_embeddings)
 
     ### Quick sanity check
     query = "database connections maxed out after a deploy"
