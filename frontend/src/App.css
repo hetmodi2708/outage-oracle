@@ -1,0 +1,874 @@
+/* ---------- Layout ---------- */
+.app {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.container {
+  width: 100%;
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 20px 64px;
+  flex: 1;
+}
+
+/* ---------- Masthead (dark band) ---------- */
+.masthead {
+  background: var(--ink);
+  color: var(--ink-text);
+}
+
+.topbar {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 16px 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  border-bottom: 1px solid var(--ink-line);
+}
+
+.brand {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.brand__mark {
+  width: 22px;
+  height: 22px;
+  border-radius: 6px;
+  background: var(--accent);
+  position: relative;
+}
+
+/* a small "status dot" inside the mark */
+.brand__mark::after {
+  content: '';
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: var(--ink);
+  top: 7px;
+  left: 7px;
+}
+
+.brand__name {
+  font-weight: 650;
+  letter-spacing: -0.01em;
+}
+
+.topbar__link {
+  color: var(--ink-muted);
+  text-decoration: none;
+  font-size: 14px;
+}
+
+.topbar__link:hover {
+  color: var(--ink-text);
+}
+
+/* ---------- Hero ---------- */
+.hero {
+  max-width: 860px;
+  margin: 0 auto;
+  /* extra bottom padding = the space the search card overlaps */
+  padding: 44px 20px 104px;
+}
+
+.hero h1 {
+  font-size: 32px;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+  font-weight: 700;
+  margin-bottom: 10px;
+  color: var(--ink-text);
+}
+
+.hero p {
+  color: var(--ink-muted);
+  max-width: 640px;
+  font-size: 16px;
+}
+
+.hero__accent {
+  color: var(--accent-on-ink);
+}
+
+/* small label above the headline */
+.hero__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  color: var(--accent-on-ink);
+  border: 1px solid var(--ink-line);
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 999px;
+  padding: 3px 10px;
+  margin-bottom: 14px;
+}
+
+/* ---------- Search ---------- */
+/* The search card is pulled up so it overlaps the dark band */
+.search {
+  position: relative;
+  margin-top: -72px;
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  box-shadow: 0 10px 30px rgba(16, 24, 40, 0.14);
+  padding: 18px;
+}
+
+.search__label {
+  display: block;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--text-muted);
+  margin-bottom: 8px;
+}
+
+.search__input {
+  width: 100%;
+  resize: vertical;
+  min-height: 84px;
+  padding: 12px 14px;
+  border: 1px solid var(--border-strong);
+  border-radius: var(--radius-sm);
+  background: var(--surface);
+  line-height: 1.5;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+
+.search__input::placeholder {
+  color: var(--text-faint);
+}
+
+.search__input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 3px var(--accent-soft);
+}
+
+.search__footer {
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  margin-top: 12px;
+}
+
+.search__hint {
+  color: var(--text-faint);
+  font-size: 13px;
+  margin-right: auto;
+}
+
+.search__count {
+  color: var(--text-faint);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+}
+
+.search__count.is-over {
+  color: var(--danger);
+  font-weight: 600;
+}
+
+kbd {
+  font-family: var(--mono);
+  font-size: 11px;
+  padding: 1px 5px;
+  border: 1px solid var(--border-strong);
+  border-bottom-width: 2px;
+  border-radius: 4px;
+  background: var(--surface-muted);
+  color: var(--text-muted);
+}
+
+/* ---------- Buttons ---------- */
+.button {
+  border: 1px solid transparent;
+  background: var(--accent);
+  color: var(--accent-text);
+  font-weight: 600;
+  padding: 9px 18px;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 0.15s;
+  white-space: nowrap;
+}
+
+.button:hover:not(:disabled) {
+  background: var(--accent-hover);
+}
+
+.button:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.button--secondary {
+  background: var(--surface);
+  color: var(--text);
+  border-color: var(--border-strong);
+}
+
+.button--secondary:hover:not(:disabled) {
+  background: var(--surface-muted);
+}
+
+/* ---------- Example chips ---------- */
+.examples {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 8px;
+  margin-top: 14px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+
+.examples__label {
+  font-size: 13px;
+  color: var(--text-faint);
+  margin-right: 2px;
+}
+
+.chip {
+  border: 1px solid transparent;
+  background: var(--accent-wash);
+  color: var(--text-muted);
+  font-size: 13px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+
+.chip:hover:not(:disabled) {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+
+.chip:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ---------- Results ---------- */
+.results {
+  margin-top: 28px;
+  display: flex;
+  flex-direction: column;
+  gap: 28px;
+}
+
+.section-title {
+  font-size: 16px;
+  font-weight: 650;
+  margin-bottom: 12px;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.section-title__count {
+  font-size: 12px;
+  font-weight: 600;
+  color: var(--text-muted);
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-radius: 999px;
+  padding: 0 8px;
+}
+
+/* ---------- Likely causes panel ---------- */
+.panel {
+  background: var(--accent-wash);
+  border: 1px solid var(--accent-soft);
+  border-left: 3px solid var(--accent);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px 20px;
+}
+
+.panel__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 10px;
+}
+
+.panel__header h2 {
+  font-size: 16px;
+  font-weight: 650;
+}
+
+.panel__note {
+  margin-top: 14px;
+  padding-top: 12px;
+  border-top: 1px solid var(--accent-soft);
+  font-size: 12.5px;
+  color: var(--text-faint);
+}
+
+.badge {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 2px 10px;
+  border-radius: 999px;
+  white-space: nowrap;
+}
+
+.badge--strong {
+  color: var(--strong);
+  background: var(--strong-soft);
+}
+
+.badge--moderate {
+  color: var(--moderate);
+  background: var(--moderate-soft);
+}
+
+/* Markdown from the LLM */
+.markdown {
+  color: var(--text);
+}
+
+.markdown > * + * {
+  margin-top: 10px;
+}
+
+.markdown p {
+  margin: 0;
+}
+
+.markdown ul,
+.markdown ol {
+  margin: 0;
+  padding-left: 20px;
+}
+
+.markdown li + li {
+  margin-top: 8px;
+}
+
+.markdown li > ul {
+  margin-top: 4px;
+}
+
+.markdown strong {
+  font-weight: 650;
+}
+
+.markdown em {
+  color: var(--text-muted);
+}
+
+.markdown code {
+  font-family: var(--mono);
+  font-size: 0.9em;
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-radius: 4px;
+  padding: 0 4px;
+}
+
+/* Citation links like [1] that jump to a card */
+.markdown a[href^='#incident-'] {
+  font-size: 12px;
+  font-weight: 600;
+  text-decoration: none;
+  color: var(--accent);
+  background: var(--accent-soft);
+  border-radius: 4px;
+  padding: 0 4px;
+}
+
+/* ---------- Incident cards ---------- */
+.cards {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* Each card picks up its category's hue via --cat / --cat-soft (set by the .cat-* classes below) */
+.card {
+  --cat: var(--cat-other);
+  --cat-soft: var(--cat-other-soft);
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-top: 3px solid var(--cat);
+  border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  padding: 18px 20px;
+  scroll-margin-top: 20px;
+  transition: border-color 0.2s, box-shadow 0.2s;
+}
+
+/* highlight the card when a citation link jumps to it */
+.card:target {
+  border-color: var(--cat);
+  box-shadow: 0 0 0 3px var(--cat-soft);
+}
+
+.cat-database { --cat: var(--cat-database); --cat-soft: var(--cat-database-soft); }
+.cat-network { --cat: var(--cat-network); --cat-soft: var(--cat-network-soft); }
+.cat-dns { --cat: var(--cat-dns); --cat-soft: var(--cat-dns-soft); }
+.cat-compute { --cat: var(--cat-compute); --cat-soft: var(--cat-compute-soft); }
+.cat-storage { --cat: var(--cat-storage); --cat-soft: var(--cat-storage-soft); }
+.cat-auth-cert { --cat: var(--cat-auth-cert); --cat-soft: var(--cat-auth-cert-soft); }
+.cat-application { --cat: var(--cat-application); --cat-soft: var(--cat-application-soft); }
+.cat-other { --cat: var(--cat-other); --cat-soft: var(--cat-other-soft); }
+
+.card__header {
+  display: flex;
+  align-items: flex-start;
+  gap: 12px;
+  margin-bottom: 14px;
+}
+
+.card__rank {
+  flex: none;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  display: grid;
+  place-items: center;
+  font-size: 13px;
+  font-weight: 650;
+  color: var(--cat);
+  background: var(--cat-soft);
+}
+
+.card__title {
+  flex: 1;
+  min-width: 0;
+}
+
+.card__title h3 {
+  font-size: 16px;
+  font-weight: 650;
+  margin-bottom: 6px;
+}
+
+.card__score {
+  font-family: var(--mono);
+  font-size: 12px;
+  color: var(--text-faint);
+  padding-top: 3px;
+}
+
+.tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.tag {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 1px 8px;
+  border-radius: 4px;
+  border: 1px solid transparent;
+}
+
+.tag--category {
+  color: var(--cat);
+  background: var(--cat-soft);
+}
+
+.tag--outline {
+  color: var(--text-muted);
+  font-weight: 500;
+  background: transparent;
+  border-color: var(--border);
+}
+
+.card__fields {
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.field dt {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  color: var(--text-faint);
+  margin-bottom: 2px;
+}
+
+.field dd {
+  margin: 0;
+}
+
+.card__footer {
+  margin-top: 16px;
+  padding-top: 12px;
+  border-top: 1px solid var(--border);
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.matched {
+  flex: 1;
+  min-width: 0;
+  font-size: 13px;
+}
+
+.matched summary {
+  cursor: pointer;
+  color: var(--text-muted);
+  user-select: none;
+}
+
+.matched summary:hover {
+  color: var(--text);
+}
+
+.matched blockquote {
+  margin: 10px 0 0;
+  padding: 10px 12px;
+  background: var(--cat-soft);
+  border-left: 3px solid var(--cat);
+  border-radius: 0 var(--radius-sm) var(--radius-sm) 0;
+  color: var(--text-muted);
+  white-space: pre-wrap;
+  max-height: 220px;
+  overflow: auto;
+}
+
+.card__link {
+  font-size: 13px;
+  font-weight: 600;
+  text-decoration: none;
+  white-space: nowrap;
+}
+
+.card__link:hover {
+  text-decoration: underline;
+}
+
+/* ---------- Intro, notices, loading ---------- */
+.intro {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 14px;
+}
+
+.intro__item {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+}
+
+.intro__step {
+  display: inline-grid;
+  place-items: center;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  font-size: 12px;
+  font-weight: 700;
+  margin-bottom: 10px;
+}
+
+.intro__item:nth-child(1) .intro__step { color: var(--cat-network); background: var(--cat-network-soft); }
+.intro__item:nth-child(2) .intro__step { color: var(--cat-compute); background: var(--cat-compute-soft); }
+.intro__item:nth-child(3) .intro__step { color: var(--cat-database); background: var(--cat-database-soft); }
+
+.intro__item h3 {
+  font-size: 14px;
+  font-weight: 650;
+  margin-bottom: 4px;
+}
+
+.intro__item p {
+  font-size: 13.5px;
+  color: var(--text-muted);
+}
+
+.notice {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 20px;
+}
+
+.notice h2 {
+  font-size: 16px;
+  font-weight: 650;
+  margin-bottom: 6px;
+}
+
+.notice p {
+  color: var(--text-muted);
+}
+
+.notice--error {
+  border-color: var(--danger);
+  background: var(--danger-soft);
+}
+
+.notice--error h2 {
+  color: var(--danger);
+}
+
+.notice--error .button {
+  margin-top: 14px;
+}
+
+.loading {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.loading__text {
+  color: var(--text-muted);
+  font-size: 14px;
+}
+
+.skeleton {
+  background: var(--surface-muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  animation: pulse 1.4s ease-in-out infinite;
+}
+
+.skeleton--panel {
+  height: 140px;
+}
+
+.skeleton--card {
+  height: 190px;
+}
+
+@keyframes pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.45;
+  }
+}
+
+/* ---------- Footer ---------- */
+.site-footer {
+  background: var(--ink);
+}
+
+.site-footer p {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 18px 20px;
+  font-size: 13px;
+  color: var(--ink-muted);
+}
+
+.site-footer a {
+  color: var(--ink-text);
+}
+
+/* ---------- Small screens ---------- */
+@media (max-width: 640px) {
+  .hero {
+    padding: 32px 20px 92px;
+  }
+
+  .hero h1 {
+    font-size: 25px;
+  }
+
+  .search__hint {
+    display: none;
+  }
+
+  .search__footer {
+    justify-content: flex-end;
+  }
+
+  .intro {
+    grid-template-columns: 1fr;
+  }
+
+  .card__footer {
+    flex-direction: column;
+  }
+}
+
+/* =====================================================================
+   Polish: motion, signal bars, colored labels, small details
+   (all animations are disabled for prefers-reduced-motion in index.css)
+   ===================================================================== */
+
+/* --- "live" dot in the header pill --- */
+.live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4ade80;
+  animation: ping 2.4s ease-out infinite;
+}
+
+@keyframes ping {
+  0% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0.55); }
+  70% { box-shadow: 0 0 0 7px rgba(74, 222, 128, 0); }
+  100% { box-shadow: 0 0 0 0 rgba(74, 222, 128, 0); }
+}
+
+/* --- Search button with icon + spinner --- */
+.button--icon {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.spinner {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid currentColor;
+  border-right-color: transparent;
+  animation: spin 0.7s linear infinite;
+}
+
+@keyframes spin {
+  to { transform: rotate(360deg); }
+}
+
+/* --- Results rise in, cards one after another --- */
+@keyframes rise {
+  from { opacity: 0; transform: translateY(10px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+.panel,
+.notice,
+.card {
+  animation: rise 0.4s cubic-bezier(0.2, 0.7, 0.2, 1) backwards;
+}
+
+.cards .card:nth-child(1) { animation-delay: 0.08s; }
+.cards .card:nth-child(2) { animation-delay: 0.16s; }
+.cards .card:nth-child(3) { animation-delay: 0.24s; }
+
+/* --- Cards lift slightly on hover --- */
+.card {
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 24px rgba(16, 24, 40, 0.08);
+}
+
+/* --- Signal-strength bars for similarity --- */
+.signal {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 6px;
+  padding-top: 2px;
+}
+
+.signal__bars {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 2px;
+  height: 14px;
+}
+
+.signal__bars span {
+  width: 4px;
+  border-radius: 1px;
+  background: var(--border-strong);
+}
+
+.signal__bars span:nth-child(1) { height: 5px; }
+.signal__bars span:nth-child(2) { height: 8px; }
+.signal__bars span:nth-child(3) { height: 11px; }
+.signal__bars span:nth-child(4) { height: 14px; }
+
+.signal__bars span.is-on {
+  background: var(--cat);
+}
+
+.signal__value {
+  font-family: var(--mono);
+  font-size: 11.5px;
+  line-height: 1;
+  color: var(--text-faint);
+}
+
+/* --- Colored dots on field labels: cause / fix / prevention --- */
+.field dt {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+}
+
+.field dt::before {
+  content: '';
+  width: 7px;
+  height: 7px;
+  border-radius: 2px;
+  flex: none;
+}
+
+.field--cause dt::before { background: var(--danger); }
+.field--fix dt::before { background: var(--strong); }
+.field--prevention dt::before { background: var(--accent); }
+
+/* --- Likely causes: accent bullet markers + status dot in the badge --- */
+.markdown li::marker {
+  color: var(--accent);
+}
+
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.badge::before {
+  content: '';
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: currentColor;
+}
+
+/* --- Citation chips react on hover --- */
+.markdown a[href^='#incident-'] {
+  transition: background-color 0.15s, color 0.15s;
+}
+
+.markdown a[href^='#incident-']:hover {
+  background: var(--accent);
+  color: var(--accent-text);
+}
+
+/* --- Example chips: tiny arrow appears on hover --- */
+.chip::after {
+  content: ' →';
+  opacity: 0;
+  transition: opacity 0.15s;
+}
+
+.chip:hover:not(:disabled)::after {
+  opacity: 1;
+}
